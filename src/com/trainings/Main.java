@@ -4,10 +4,36 @@ import java.util.*;
 
 public class Main {
 
+    public static final List<Integer> intInput = Arrays.asList(1, 1, 3, 3, 3, 4, 4);
+
+    public static final String phrase = "How can mirrors be real if our eyes aren't real";
+
+    public static final int incomeNum = new Random().nextInt(50000);
+
     public static void main(String[] args) {
 
-       countOnes();
 
+        Map<Integer, Integer> map = calculateRepeatNumbers(intInput);
+        System.out.println(map);
+
+        //countOnes();
+
+    }
+
+
+    public static Map<Integer, Integer> calculateRepeatNumbers(List<Integer> input) {
+        Map<Integer, Integer> map = new LinkedHashMap<>();
+
+        input.forEach(intInput -> {
+            if (!map.containsKey(intInput)) {
+                map.put(intInput, 1);
+            }
+            else {
+                map.put(intInput, map.get(intInput)+1);
+            }
+
+        });
+        return map;
     }
 
 
@@ -48,10 +74,6 @@ public class Main {
             }
         }
     }
-
-    static final String phrase = "How can mirrors be real if our eyes aren't real";
-
-    static final int incomeNum = new Random().nextInt(50000);
 
     public static String expandedForm(int num) {
         System.out.println(num);
