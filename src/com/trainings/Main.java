@@ -1,6 +1,8 @@
 package com.trainings;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -13,13 +15,55 @@ public class Main {
     public static void main(String[] args) {
 
 
-        Map<Integer, Integer> map = calculateRepeatNumbers(intInput);
-        System.out.println(map);
+        longestPrefix();
 
-        //countOnes();
+       // System.out.println(sumDigitsFromString("3242356"));
+
 
     }
 
+
+    public static void longestPrefix() {
+        final String[] strings = new String[] {"abc", "abcegeg", "abcde", "abcg"};
+        /**/
+
+        String prefix = "";
+        Arrays.sort(strings, Comparator.comparingInt(String::length));
+        String firstWord = strings[0];
+
+        letters: for (int i = 0; i < firstWord.length(); i++) {
+            String checkLetter = String.valueOf(firstWord.charAt(i));
+
+            for (int j = 1; j < strings.length; j++) {
+                String checkingWord = strings[j];
+                if (!String.valueOf(checkingWord.charAt(i)).equals(checkLetter)) {
+                    break letters;
+                }
+            }
+            prefix = prefix.concat(checkLetter);
+        }
+        System.out.println(prefix);
+    }
+
+
+    public static int sumDigitsFromString(String digit) {
+        try{
+            return Arrays.stream(digit.split(""))
+                    .map(Integer::parseInt)
+                    .reduce(0, Integer::sum);
+        }
+        catch (NumberFormatException e) {
+            return 0;
+        }
+
+        /*
+        AtomicInteger sum = new AtomicInteger(0);
+        Arrays.asList(digit.split("")).forEach(s -> {
+            sum.getAndAdd(Integer.parseInt(s));
+        });
+        return sum.get();
+        */
+    }
 
     public static Map<Integer, Integer> calculateRepeatNumbers(List<Integer> input) {
         Map<Integer, Integer> map = new LinkedHashMap<>();
@@ -27,11 +71,9 @@ public class Main {
         input.forEach(intInput -> {
             if (!map.containsKey(intInput)) {
                 map.put(intInput, 1);
+            } else {
+                map.put(intInput, map.get(intInput) + 1);
             }
-            else {
-                map.put(intInput, map.get(intInput)+1);
-            }
-
         });
         return map;
     }
@@ -59,13 +101,11 @@ public class Main {
 
             if (intsLength == 0) {
                 System.out.println("ARRAY IS EMPTY");
-            }
-            else {
+            } else {
                 for (int currentInt : intArr) {
                     if (currentInt > 0) {
                         currentCount++;
-                    }
-                    else {
+                    } else {
                         currentCount = 0;
                     }
                     maxCount = Math.max(maxCount, currentCount);
